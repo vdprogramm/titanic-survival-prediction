@@ -6,9 +6,7 @@ A machine learning project that predicts Titanic passenger survival based on dem
 
 ## 🌐 Live Demo
 
-**[Try the Titanic Survival Prediction App](https://titanic-survival-prediction-jogdkappjyf55udllbimew.streamlit.app/)**
-
-**[GitHub Repository](https://github.com/vdprogramm/titanic-survival-prediction)**
+**[Try the Titanic Survival Prediction App](https://titanic-survival-prediction-jogdkappjyf55fudllbimew.streamlit.app/)**
 
 Users can enter passenger information and receive a survival prediction from a trained Random Forest model.
 
