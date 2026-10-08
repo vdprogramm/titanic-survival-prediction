@@ -1,126 +1,130 @@
-# Titanic Survival Prediction 🚢
+# 🚢 Titanic Survival Prediction V2
 
-A Machine Learning classification project that predicts whether a passenger survived the Titanic disaster based on passenger information.
+**Machine Learning Classification | Python • Scikit-learn • Pandas • Streamlit**
 
-This project covers the complete basic Machine Learning workflow, including data exploration, preprocessing, feature engineering, model training, evaluation, and Kaggle submission.
+A machine learning project that predicts Titanic passenger survival based on demographic and travel information. The project covers exploratory data analysis, preprocessing, feature engineering, model training, evaluation, and deployment as an interactive web application.
 
-## Project Overview
+## 🌐 Live Demo
 
-The objective of this project is to predict passenger survival using the Titanic dataset from Kaggle.
+**[Try the Titanic Survival Prediction App](https://titanic-survival-prediction-jogdkappjyf55udllbimew.streamlit.app/)**
 
-The project started with a baseline Random Forest model and was later improved through feature engineering.
+**[GitHub Repository](https://github.com/vdprogramm/titanic-survival-prediction)**
 
-### Kaggle Results
+Users can enter passenger information and receive a survival prediction from a trained Random Forest model.
 
-| Model | Kaggle Score |
-|---|---:|
-| Random Forest Baseline | 0.75598 |
-| Random Forest + Feature Engineering | **0.78708** |
+## 📊 Project Results
 
-Feature engineering improved the Kaggle score from **75.60% to 78.71%**, an improvement of approximately **3.11 percentage points**.
+| Metric | Result |
+|---|---|
+| Machine Learning Task | Binary Classification |
+| Dataset | Kaggle Titanic |
+| Algorithm | Random Forest Classifier |
+| Baseline Kaggle Public Score | 0.75598 |
+| Improved V2 Kaggle Public Score | **0.78708** |
+| Improvement | +3.11 percentage points |
+| Deployed Application | Streamlit Community Cloud |
 
-## Tech Stack
+The V2 model improved the Kaggle public score through feature engineering and Random Forest hyperparameter tuning.
 
-- Python
-- Pandas
-- NumPy
-- Matplotlib
-- Scikit-learn
-- Jupyter Notebook
+*Note: Kaggle scores refer to submitted predictions. The deployed model is retrained and its predictions may differ from the original V2 submission.*
 
-## Dataset
+## 🛠️ Tech Stack
 
-The project uses the Titanic dataset from the Kaggle competition:
+| Category | Technologies |
+|---|---|
+| Programming Language | Python |
+| Data Processing | Pandas, NumPy |
+| Data Visualization | Matplotlib |
+| Machine Learning | Scikit-learn |
+| Algorithm | Random Forest |
+| Model Serialization | Joblib |
+| Web Application | Streamlit |
+| Development Environment | Jupyter Notebook, VS Code |
+| Deployment | Streamlit Community Cloud |
+| Version Control | Git, GitHub |
 
-**Titanic - Machine Learning from Disaster**
+## 🎯 Project Objectives
 
-Main files:
+- Analyze the Titanic passenger dataset.
+- Clean and preprocess missing or categorical data.
+- Identify factors associated with passenger survival.
+- Train and evaluate classification models.
+- Improve predictive performance through feature engineering.
+- Build an interactive web interface for predictions.
+- Deploy the application for public access.
 
-- `train.csv` - training data containing the `Survived` target
-- `test.csv` - test data used for Kaggle predictions
+## 📁 Project Structure
 
-The target variable is:
-
-- `0` - Did not survive
-- `1` - Survived
-
-Important input features include:
-
-- `Pclass` - passenger class
-- `Sex` - gender
-- `Age` - passenger age
-- `SibSp` - siblings/spouses aboard
-- `Parch` - parents/children aboard
-- `Fare` - ticket fare
-- `Embarked` - port of embarkation
-
-## Data Preprocessing
-
-The preprocessing pipeline includes:
-
-- Inspecting missing values
-- Filling missing `Age` values using the median
-- Filling missing `Embarked` values using the mode
-- Filling missing `Fare` values using the median
-- Encoding categorical variables using one-hot encoding
-- Removing unused/high-missing features from the baseline model
-
-The `Cabin` feature was not used in the baseline model because a large portion of its values were missing.
-
-## Exploratory Data Analysis
-
-Basic exploratory data analysis was performed to understand relationships between passenger attributes and survival.
-
-One notable observation was that female passengers had a significantly higher survival rate than male passengers.
-
-## Feature Engineering
-
-The second version introduced additional features.
-
-### FamilySize
-
-```python
-FamilySize = SibSp + Parch + 1
+```text
+titanic-survival-ml/
+├── data/
+│   ├── train.csv
+│   └── test.csv
+├── notebooks/
+│   └── titanic_analysis.ipynb
+├── src/
+│   └── train.py
+├── models/
+│   └── titanic_model.pkl
+├── app.py
+├── requirements.txt
+├── .gitignore
+├── README.md
+├── submission.csv
+└── submission_v2.csv
 ```
 
-Represents the total number of family members travelling together, including the passenger.
+## 📈 Exploratory Data Analysis
 
-### IsAlone
+The analysis explores how passenger characteristics relate to survival, including:
+
+- Gender and survival rate.
+- Passenger class and survival rate.
+- Age distribution.
+- Ticket fare.
+- Family relationships.
+- Missing data and feature distributions.
+
+Exploratory analysis and visualizations are available in `notebooks/titanic_analysis.ipynb`.
+
+## 🧠 Machine Learning Workflow
+
+### 1. Data Preprocessing
+
+The dataset is prepared by:
+
+- Handling missing values in `Age`, `Fare`, and `Embarked`.
+- Encoding categorical variables.
+- Selecting relevant numerical and categorical features.
+- Splitting labeled data into training and validation sets.
+
+### 2. Feature Engineering
+
+The improved notebook model includes additional features:
+
+**FamilySize**
 
 ```python
-IsAlone = 1 if FamilySize == 1 else 0
+df["FamilySize"] = df["SibSp"] + df["Parch"] + 1
 ```
 
-Identifies passengers travelling alone.
+**IsAlone**
 
-### Title
+```python
+df["IsAlone"] = (df["FamilySize"] == 1).astype(int)
+```
 
-Passenger titles were extracted from the `Name` column.
+**Title**
 
-Examples:
+Extracted from passenger names and grouped into common and rare titles.
 
-- Mr
-- Mrs
-- Miss
-- Master
+These features help the model capture additional patterns in the passenger data.
 
-Less common titles were grouped into the `Rare` category.
+### 3. Model Training
 
-These engineered features improved the Kaggle score from **0.75598 to 0.78708**.
+The project experiments with classification algorithms, including Logistic Regression and Random Forest.
 
-## Machine Learning Models
-
-Two classification algorithms were explored:
-
-### Logistic Regression
-
-Used as a simple classification baseline for model comparison.
-
-### Random Forest Classifier
-
-Random Forest was used as the main prediction model.
-
-The improved version used parameters such as:
+The improved Random Forest configuration uses:
 
 ```python
 RandomForestClassifier(
@@ -132,124 +136,118 @@ RandomForestClassifier(
 )
 ```
 
-## Model Evaluation
+### 4. Model Evaluation
 
-The models were evaluated using:
+Model performance is examined using:
 
-- Accuracy
-- Precision
-- Recall
-- F1-score
-- Confusion Matrix
+- Validation accuracy.
+- Classification report.
+- Confusion matrix.
+- Feature importance.
+- Kaggle public leaderboard score.
 
-A local validation set was created using an 80/20 train-validation split.
+## 💻 Streamlit Web Application
 
-Final performance was also evaluated through Kaggle submissions.
+The deployed application allows users to enter:
 
-## Results
+- Passenger class.
+- Gender.
+- Age.
+- Ticket fare.
+- Number of siblings or spouses.
+- Number of parents or children.
+- Port of embarkation.
+- Passenger title.
 
-The baseline submission achieved:
+The application loads a saved machine learning model and generates a passenger survival prediction.
 
-```text
-Kaggle Score: 0.75598
-```
+The output is a statistical prediction for educational purposes, not a historical determination of an individual passenger's fate.
 
-After adding `FamilySize`, `IsAlone`, and `Title`:
+## 🚀 Run Locally
 
-```text
-Kaggle Score: 0.78708
-```
-
-This demonstrates how feature engineering can improve a Machine Learning model without simply increasing model complexity.
-
-## Project Structure
-
-```text
-titanic-survival-ml/
-│
-├── data/
-│   ├── train.csv
-│   └── test.csv
-│
-├── notebooks/
-│   └── titanic_analysis.ipynb
-│
-├── submission.csv
-├── submission_v2.csv
-├── requirements.txt
-├── .gitignore
-└── README.md
-```
-
-## Installation
-
-Clone the repository:
+### 1. Clone the repository
 
 ```bash
-git clone <your-repository-url>
-cd titanic-survival-ml
+git clone https://github.com/vdprogramm/titanic-survival-prediction.git
+cd titanic-survival-prediction
 ```
 
-Create a virtual environment:
+### 2. Create a virtual environment
 
 ```bash
 python -m venv .venv
 ```
 
-Activate it on Windows:
+Activate the environment on Windows:
 
-```bash
-.venv\Scripts\activate
+```powershell
+.venv\Scripts\Activate.ps1
 ```
 
-Install dependencies:
+### 3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Start Jupyter:
+### 4. Train and save the model
 
 ```bash
-jupyter notebook
+python src/train.py
+```
+
+### 5. Launch the Streamlit application
+
+```bash
+python -m streamlit run app.py
 ```
 
 Open:
 
+`http://localhost:8501`
+
+## ☁️ Deployment
+
+The web application is deployed using **Streamlit Community Cloud** and connected to the GitHub repository.
+
+Deployment configuration:
+
 ```text
-notebooks/titanic_analysis.ipynb
+Repository: vdprogramm/titanic-survival-prediction
+Branch: main
+Main file path: app.py
 ```
 
-and run the cells from top to bottom.
+The deployment installs Python dependencies from `requirements.txt` and launches the Streamlit application.
 
-## What I Learned
+## 📚 Key Learnings
 
-Through this project, I practiced:
+Through this project, I gained practical experience in:
 
-- Data cleaning with Pandas
-- Handling missing values
-- Exploratory Data Analysis
-- Feature engineering
-- Categorical feature encoding
-- Train/validation splitting
-- Classification using Logistic Regression and Random Forest
-- Model evaluation
-- Feature importance analysis
-- Generating predictions for unseen data
-- Creating and submitting predictions to Kaggle
+- Data cleaning and exploratory analysis.
+- Machine learning classification workflows.
+- Feature engineering.
+- Model training and evaluation.
+- Comparing baseline and improved models.
+- Saving and loading trained models.
+- Building Python web applications with Streamlit.
+- Deploying machine learning applications through GitHub.
 
-## Future Improvements
+## 🔮 Future Improvements
 
-Possible improvements include:
+- Improve preprocessing consistency using Scikit-learn Pipelines.
+- Compare additional classification algorithms.
+- Perform cross-validation and hyperparameter optimization.
+- Add model explainability visualizations.
+- Improve the Streamlit user interface.
+- Add automated tests for the prediction pipeline.
 
-- Cross-validation
-- Hyperparameter tuning with GridSearchCV or RandomizedSearchCV
-- Additional feature engineering
-- Comparing Gradient Boosting models
-- Building a reusable Scikit-learn Pipeline
-
-## Author
+## 👨‍💻 Author
 
 **Dinh Thanh Vinh**
 
-Backend Developer / Machine Learning Learner
+GitHub: [vdprogramm](https://github.com/vdprogramm)
+
+---
+
+⭐ If you find this project useful, consider giving the repository a star.
